@@ -117,7 +117,7 @@ const AppContent: React.FC = () => {
   const finalShowNav = showNav && !isChatDetail && !location.pathname.includes('/settings/');
 
   return (
-    <div className="relative h-[100dvh] w-full max-w-md mx-auto overflow-hidden bg-background-light dark:bg-background-dark shadow-2xl transition-colors duration-300">
+    <div className="relative h-full w-full overflow-hidden bg-background-light dark:bg-background-dark transition-colors duration-300">
       <AssetGenerator />
       <Routes>
         <Route path="/" element={<Onboarding onConsent={handleConsent} />} />
@@ -140,7 +140,12 @@ const AppContent: React.FC = () => {
 const App: React.FC = () => {
   return (
     <HashRouter>
-      <AppContent />
+      {/* 外层容器 - 在桌面端显示时居中并添加手机框效果 */}
+      <div className="phone-container">
+        <div className="phone-frame">
+          <AppContent />
+        </div>
+      </div>
     </HashRouter>
   );
 };

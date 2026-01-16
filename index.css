@@ -373,3 +373,75 @@ html {
         transition-duration: 0.01ms !important;
     }
 }
+
+/* ========================================
+   手机容器样式 - 桌面端显示为手机尺寸
+   ======================================== */
+
+/* 外层容器 - 全屏背景 */
+.phone-container {
+    min-height: 100vh;
+    min-height: 100dvh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    padding: 0;
+}
+
+/* 手机框 - 限制宽度并添加阴影 */
+.phone-frame {
+    width: 100%;
+    max-width: 430px;
+    height: 100vh;
+    height: 100dvh;
+    position: relative;
+    overflow: hidden;
+    background: #1c112d;
+}
+
+/* 桌面端样式 - 添加圆角和阴影效果 */
+@media (min-width: 480px) {
+    .phone-container {
+        padding: 20px;
+    }
+
+    .phone-frame {
+        height: calc(100vh - 40px);
+        height: calc(100dvh - 40px);
+        max-height: 932px;
+        /* iPhone 16 Pro Max 高度 */
+        border-radius: 40px;
+        box-shadow:
+            0 0 0 12px #1a1a2e,
+            0 25px 50px -12px rgba(0, 0, 0, 0.5),
+            0 0 80px rgba(252, 120, 171, 0.15);
+    }
+
+    /* 模拟手机刘海 */
+    .phone-frame::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 120px;
+        height: 30px;
+        background: #1a1a2e;
+        border-radius: 0 0 20px 20px;
+        z-index: 9999;
+    }
+}
+
+/* 超大屏幕 - 增加边距 */
+@media (min-width: 1024px) {
+    .phone-container {
+        padding: 40px;
+    }
+
+    .phone-frame {
+        height: calc(100vh - 80px);
+        height: calc(100dvh - 80px);
+    }
+}

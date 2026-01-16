@@ -1,0 +1,8 @@
+{
+  "name": "恋奈 | 心语伙伴 AI Emotional Support",
+  "description": "An AI-powered emotional companion and counseling app featuring personalized consultants, mood tracking, and a social feed for mental wellness.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

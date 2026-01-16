@@ -1,0 +1,375 @@
+/* ========================================
+   心语伙伴 - AI 情感咨询 App
+   主样式文件
+   ======================================== */
+
+/* 基础重置与变量 */
+:root {
+    --primary: #fc78ab;
+    --primary-dark: #d65d8b;
+    --primary-light: #ffb6d3;
+    --bg-light: #fcfbf8;
+    --bg-dark: #1c112d;
+}
+
+/* 平滑滚动 */
+html {
+    scroll-behavior: smooth;
+}
+
+/* 隐藏滚动条但保持滚动功能 */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* 玻璃拟态面板 */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.dark .glass-panel {
+    background: rgba(28, 17, 45, 0.75);
+}
+
+/* 安全区域适配 */
+.safe-pb {
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-pt {
+    padding-top: env(safe-area-inset-top);
+}
+
+/* ========================================
+   图片加载动画与错误状态
+   ======================================== */
+
+/* 图片加载骨架屏 */
+.img-skeleton {
+    background: linear-gradient(90deg,
+            rgba(200, 200, 200, 0.1) 25%,
+            rgba(200, 200, 200, 0.2) 50%,
+            rgba(200, 200, 200, 0.1) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s infinite;
+}
+
+@keyframes skeleton-shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* 图片淡入动画 */
+.img-fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* 图片错误占位样式 */
+.img-error-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%);
+    color: #999;
+}
+
+.dark .img-error-placeholder {
+    background: linear-gradient(135deg, #2a2a3a 0%, #1a1a2e 100%);
+    color: #666;
+}
+
+/* ========================================
+   自定义动画
+   ======================================== */
+
+/* 心跳动画 - 用于在线状态 */
+@keyframes pulse-glow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+    }
+}
+
+.pulse-glow {
+    animation: pulse-glow 2s infinite;
+}
+
+/* 浮动动画 */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* 闪烁动画 - 用于通知 */
+@keyframes sparkle {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.7;
+        transform: scale(0.95);
+    }
+}
+
+.animate-sparkle {
+    animation: sparkle 2s ease-in-out infinite;
+}
+
+/* 渐变文字动画 */
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.animated-gradient-text {
+    background: linear-gradient(90deg, var(--primary), #B8A9E8, var(--primary));
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-shift 3s ease infinite;
+}
+
+/* ========================================
+   头像与图片样式
+   ======================================== */
+
+/* 二次元风格头像边框 */
+.avatar-anime {
+    border: 2px solid transparent;
+    background:
+        linear-gradient(white, white) padding-box,
+        linear-gradient(135deg, var(--primary) 0%, #B8A9E8 100%) border-box;
+    border-radius: 9999px;
+}
+
+.dark .avatar-anime {
+    background:
+        linear-gradient(#1c112d, #1c112d) padding-box,
+        linear-gradient(135deg, var(--primary) 0%, #B8A9E8 100%) border-box;
+}
+
+/* 图片悬浮效果 */
+.img-hover-zoom {
+    overflow: hidden;
+}
+
+.img-hover-zoom img {
+    transition: transform 0.5s ease;
+}
+
+.img-hover-zoom:hover img {
+    transform: scale(1.05);
+}
+
+/* ========================================
+   按钮效果
+   ======================================== */
+
+/* 主按钮光晕效果 */
+.btn-glow {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-glow::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent);
+    transition: left 0.5s;
+}
+
+.btn-glow:hover::before {
+    left: 100%;
+}
+
+/* ========================================
+   卡片样式
+   ======================================== */
+
+/* 咨询师卡片悬浮效果 */
+.consultant-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.consultant-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -15px rgba(252, 120, 171, 0.2);
+}
+
+/* 消息气泡动画 */
+@keyframes message-in {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.message-bubble {
+    animation: message-in 0.3s ease-out forwards;
+}
+
+/* ========================================
+   布局辅助
+   ======================================== */
+
+/* 渐变遮罩 */
+.gradient-mask-bottom {
+    mask-image: linear-gradient(to bottom, black 60%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent);
+}
+
+/* 文字截断 */
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ========================================
+   过渡动画
+   ======================================== */
+
+/* 页面切换动画 */
+.page-enter {
+    opacity: 0;
+    transform: translateX(20px);
+}
+
+.page-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.page-exit {
+    opacity: 1;
+}
+
+.page-exit-active {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+/* ========================================
+   滚动条样式（非隐藏场景）
+   ======================================== */
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(252, 120, 171, 0.3);
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(252, 120, 171, 0.5);
+}
+
+/* ========================================
+   响应式调整
+   ======================================== */
+
+@media (max-width: 380px) {
+    .text-responsive-sm {
+        font-size: 0.875rem;
+    }
+
+    .p-responsive {
+        padding: 0.75rem;
+    }
+}
+
+/* 减少动画 - 无障碍支持 */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

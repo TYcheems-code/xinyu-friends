@@ -134,7 +134,7 @@ export const sendMessageToAI = async (
   if (SILICONFLOW_API_KEY) {
     try {
       console.log('Sending request to SiliconFlow (China accessible)...', {
-        model: 'Qwen/Qwen2.5-7B-Instruct',
+        model: 'deepseek-ai/DeepSeek-V3',  // DeepSeek V3 高性能模型
         messageCount: openaiMessages.length
       });
 
@@ -145,7 +145,7 @@ export const sendMessageToAI = async (
           'Authorization': `Bearer ${SILICONFLOW_API_KEY}`
         },
         body: JSON.stringify({
-          model: 'Qwen/Qwen2.5-7B-Instruct',  // 免费高质量模型
+          model: 'deepseek-ai/DeepSeek-V3',  // DeepSeek V3 高性能模型
           messages: openaiMessages,
           temperature: 0.8,
           max_tokens: 500

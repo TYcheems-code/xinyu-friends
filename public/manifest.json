@@ -1,0 +1,90 @@
+{
+    "name": "心语伙伴 - AI 情感咨询",
+    "short_name": "心语伙伴",
+    "description": "温暖陪伴，倾听心声 - 您的 AI 情感咨询师",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#1c112d",
+    "theme_color": "#fc78ab",
+    "orientation": "portrait",
+    "scope": "/",
+    "lang": "zh-CN",
+    "categories": [
+        "lifestyle",
+        "health",
+        "social"
+    ],
+    "icons": [
+        {
+            "src": "/icons/icon-72x72.png",
+            "sizes": "72x72",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/icons/icon-96x96.png",
+            "sizes": "96x96",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/icons/icon-128x128.png",
+            "sizes": "128x128",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/icons/icon-144x144.png",
+            "sizes": "144x144",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/icons/icon-152x152.png",
+            "sizes": "152x152",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/icons/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/icons/icon-384x384.png",
+            "sizes": "384x384",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/icons/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable any"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "/screenshots/screenshot-1.png",
+            "sizes": "430x932",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label": "首页 - 咨询师列表"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "开始聊天",
+            "short_name": "聊天",
+            "description": "与恋奈开始对话",
+            "url": "/#/chat/liana",
+            "icons": [
+                {
+                    "src": "/icons/icon-96x96.png",
+                    "sizes": "96x96"
+                }
+            ]
+        }
+    ]
+}

@@ -103,9 +103,9 @@ export const sendMessageToAI = async (
 重要指南：
 - 始终使用中文回复
 - 保持温暖、共情、专业的态度
-- 回复简洁但有深度，通常2-4句话
+- 回复简洁但有深度，一次回复只提供一个建议
 - 适当使用可爱的表情符号（如 ✨💕🌸）
-- 像朋友一样亲切地交流，而不是机械地回应
+- 像朋友一样亲切地交流，不要使用列表或机械的结构化回复
 - 倾听用户的情感需求，给予支持和建议`;
 
   const finalSystemPrompt = systemPrompt || defaultSystemPrompt;

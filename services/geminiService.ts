@@ -65,8 +65,6 @@ export const sendMessageToAI = async (
   consultantDescription: string,
   systemPrompt?: string
 ) => {
-  // 使用 OpenRouter API
-  const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || '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';
 
   // Logic to detect if user wants an image (保留图片生成功能，使用 Gemini)
   const imageTriggers = ['画', '图片', '看', '绘', 'draw', 'image', 'picture', 'show me'];
@@ -112,67 +110,111 @@ export const sendMessageToAI = async (
 
   const finalSystemPrompt = systemPrompt || defaultSystemPrompt;
 
-  // 使用 OpenRouter API 进行文本对话
-  try {
-    // 将历史消息转换为 OpenAI 格式
-    const openaiMessages = [
-      {
-        role: 'system' as const,
-        content: finalSystemPrompt
-      },
-      ...history.map(msg => ({
-        role: msg.role === 'user' ? 'user' as const : 'assistant' as const,
-        content: msg.parts[0]?.text || ''
-      })),
-      {
-        role: 'user' as const,
-        content: userMessage
-      }
-    ];
-
-    // 动态获取 referer（支持 Vercel 部署）
-    const referer = typeof window !== 'undefined' ? window.location.origin : 'https://xinyu-companion.vercel.app';
-
-    console.log('Sending request to OpenRouter...', {
-      model: 'google/gemini-2.0-flash-exp:free',
-      messageCount: openaiMessages.length,
-      referer,
-      hasApiKey: !!OPENROUTER_API_KEY && OPENROUTER_API_KEY.length > 10
-    });
-
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-        'HTTP-Referer': referer,
-        'X-Title': 'Xinyu AI Companion'
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.0-flash-exp:free',  // 使用免费的 Gemini 模型
-        messages: openaiMessages,
-        temperature: 0.8,
-        max_tokens: 500
-      })
-    });
-
-    console.log('OpenRouter response status:', response.status);
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('OpenRouter API Error:', response.status, errorText);
-      throw new Error(`API Error: ${response.status} - ${errorText}`);
+  // 将历史消息转换为 OpenAI 格式
+  const openaiMessages = [
+    {
+      role: 'system' as const,
+      content: finalSystemPrompt
+    },
+    ...history.map(msg => ({
+      role: msg.role === 'user' ? 'user' as const : 'assistant' as const,
+      content: msg.parts[0]?.text || ''
+    })),
+    {
+      role: 'user' as const,
+      content: userMessage
     }
+  ];
 
-    const data = await response.json();
-    console.log('OpenRouter response data:', data);
-    const aiResponse = data.choices?.[0]?.message?.content || "对不起，我现在有点走神。";
+  // API 配置 - 优先使用硅基流动（国内可直接访问），备用 OpenRouter
+  const SILICONFLOW_API_KEY = process.env.SILICONFLOW_API_KEY || '';
+  const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || '';
 
-    return { text: aiResponse };
-  } catch (error) {
-    console.error("OpenRouter Error:", error);
-    return { text: "抱歉，由于连接问题，我暂时无法回应。请稍后再试~ 💕" };
+  // 尝试使用硅基流动 API（国内可访问）
+  if (SILICONFLOW_API_KEY) {
+    try {
+      console.log('Sending request to SiliconFlow (China accessible)...', {
+        model: 'Qwen/Qwen2.5-7B-Instruct',
+        messageCount: openaiMessages.length
+      });
+
+      const response = await fetch('https://api.siliconflow.cn/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${SILICONFLOW_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: 'Qwen/Qwen2.5-7B-Instruct',  // 免费高质量模型
+          messages: openaiMessages,
+          temperature: 0.8,
+          max_tokens: 500
+        })
+      });
+
+      console.log('SiliconFlow response status:', response.status);
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('SiliconFlow response data:', data);
+        const aiResponse = data.choices?.[0]?.message?.content || "对不起，我现在有点走神。";
+        return { text: aiResponse };
+      } else {
+        console.error('SiliconFlow API Error:', response.status, await response.text());
+        // 继续尝试 OpenRouter
+      }
+    } catch (error) {
+      console.error("SiliconFlow Error:", error);
+      // 继续尝试 OpenRouter
+    }
   }
+
+  // 备用：使用 OpenRouter API（需要科学上网）
+  if (OPENROUTER_API_KEY) {
+    try {
+      const referer = typeof window !== 'undefined' ? window.location.origin : 'https://xinyu-companion.vercel.app';
+
+      console.log('Falling back to OpenRouter...', {
+        model: 'google/gemini-2.0-flash-exp:free',
+        messageCount: openaiMessages.length,
+        referer
+      });
+
+      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+          'HTTP-Referer': referer,
+          'X-Title': 'Xinyu AI Companion'
+        },
+        body: JSON.stringify({
+          model: 'google/gemini-2.0-flash-exp:free',
+          messages: openaiMessages,
+          temperature: 0.8,
+          max_tokens: 500
+        })
+      });
+
+      console.log('OpenRouter response status:', response.status);
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('OpenRouter response data:', data);
+        const aiResponse = data.choices?.[0]?.message?.content || "对不起，我现在有点走神。";
+        return { text: aiResponse };
+      } else {
+        const errorText = await response.text();
+        console.error('OpenRouter API Error:', response.status, errorText);
+      }
+    } catch (error) {
+      console.error("OpenRouter Error:", error);
+    }
+  }
+
+  // 所有 API 都失败时的回退响应
+  console.error("All AI APIs failed. No valid API key configured.");
+  return { text: "抱歉，由于连接问题，我暂时无法回应。请检查网络连接或稍后再试~ 💕" };
 };
 
 export const speakMessage = async (text: string) => {

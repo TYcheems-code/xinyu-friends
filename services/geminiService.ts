@@ -130,18 +130,26 @@ export const sendMessageToAI = async (
       }
     ];
 
-    console.log('Sending request to OpenRouter...', { model: 'openai/gpt-oss-120b', messageCount: openaiMessages.length });
+    // 动态获取 referer（支持 Vercel 部署）
+    const referer = typeof window !== 'undefined' ? window.location.origin : 'https://xinyu-companion.vercel.app';
+
+    console.log('Sending request to OpenRouter...', {
+      model: 'google/gemini-2.0-flash-exp:free',
+      messageCount: openaiMessages.length,
+      referer,
+      hasApiKey: !!OPENROUTER_API_KEY && OPENROUTER_API_KEY.length > 10
+    });
 
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-        'HTTP-Referer': 'http://localhost:3001',
+        'HTTP-Referer': referer,
         'X-Title': 'Xinyu AI Companion'
       },
       body: JSON.stringify({
-        model: 'openai/gpt-oss-120b',
+        model: 'google/gemini-2.0-flash-exp:free',  // 使用免费的 Gemini 模型
         messages: openaiMessages,
         temperature: 0.8,
         max_tokens: 500

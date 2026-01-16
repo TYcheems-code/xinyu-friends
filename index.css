@@ -399,6 +399,8 @@ html {
     position: relative;
     overflow: hidden;
     background: #1c112d;
+    /* 创建新的包含块，使 fixed 元素相对于此容器定位 */
+    transform: translateZ(0);
 }
 
 /* 桌面端样式 - 添加圆角和阴影效果 */

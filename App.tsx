@@ -13,6 +13,7 @@ import Privacy from './pages/settings/Privacy';
 import Subscription from './pages/settings/Subscription';
 import ConsultantProfile from './pages/ConsultantProfile';
 import Navigation from './components/Navigation';
+import PWAInstallPrompt from './components/PWAInstallPrompt';
 import { generateImage } from './services/geminiService';
 
 // Asset Generator Component
@@ -133,6 +134,7 @@ const AppContent: React.FC = () => {
         <Route path="/profile/:id" element={<ConsultantProfile />} />
       </Routes>
       {finalShowNav && <Navigation />}
+      <PWAInstallPrompt />
     </div>
   );
 };

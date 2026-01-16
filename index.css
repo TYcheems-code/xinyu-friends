@@ -140,6 +140,23 @@ html {
     animation: float 3s ease-in-out infinite;
 }
 
+/* PWA 安装提示滑入动画 */
+@keyframes slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-slide-up {
+    animation: slide-up 0.4s ease-out forwards;
+}
+
 /* 闪烁动画 - 用于通知 */
 @keyframes sparkle {
 

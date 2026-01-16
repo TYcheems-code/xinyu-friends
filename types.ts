@@ -20,6 +20,11 @@ export interface Consultant {
   currentExperience: number;
   color: string;
   gradient: string;
+  // 新增详细角色设定
+  mbti?: string;
+  archetype?: string;
+  signaturePhrases?: string[];
+  systemPrompt?: string;
 }
 
 export interface Message {

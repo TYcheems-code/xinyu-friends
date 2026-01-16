@@ -62,7 +62,8 @@ export const sendMessageToAI = async (
   consultantName: string,
   history: { role: string; parts: { text: string }[] }[],
   userMessage: string,
-  consultantDescription: string
+  consultantDescription: string,
+  systemPrompt?: string
 ) => {
   // 使用 OpenRouter API
   const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || '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';
@@ -97,13 +98,8 @@ export const sendMessageToAI = async (
     }
   }
 
-  // 使用 OpenRouter API 进行文本对话
-  try {
-    // 将历史消息转换为 OpenAI 格式
-    const openaiMessages = [
-      {
-        role: 'system' as const,
-        content: `你是${consultantName}，一位专业的 AI 情感咨询师。
+  // 构建系统提示词：优先使用传入的 systemPrompt，否则使用默认模板
+  const defaultSystemPrompt = `你是${consultantName}，一位专业的 AI 情感咨询师。
 角色设定：${consultantDescription}
 
 重要指南：
@@ -112,7 +108,17 @@ export const sendMessageToAI = async (
 - 回复简洁但有深度，通常2-4句话
 - 适当使用可爱的表情符号（如 ✨💕🌸）
 - 像朋友一样亲切地交流，而不是机械地回应
-- 倾听用户的情感需求，给予支持和建议`
+- 倾听用户的情感需求，给予支持和建议`;
+
+  const finalSystemPrompt = systemPrompt || defaultSystemPrompt;
+
+  // 使用 OpenRouter API 进行文本对话
+  try {
+    // 将历史消息转换为 OpenAI 格式
+    const openaiMessages = [
+      {
+        role: 'system' as const,
+        content: finalSystemPrompt
       },
       ...history.map(msg => ({
         role: msg.role === 'user' ? 'user' as const : 'assistant' as const,

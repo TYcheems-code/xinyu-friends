@@ -104,7 +104,8 @@ const ChatDetail: React.FC = () => {
         consultant.name,
         history,
         currentInput,
-        consultant.description
+        consultant.description,
+        consultant.systemPrompt
       );
 
       const aiMsg: Message = {
